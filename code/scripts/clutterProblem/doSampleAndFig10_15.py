@@ -17,7 +17,7 @@ def main(argv):
     parser.add_argument("--w", help="mixture coefficient", type=float,
                         default=0.5)
     parser.add_argument("--n_samples", help="number of samples", type=int,
-                        default=100)
+                        default=30)
     parser.add_argument("--x_min", help="minimum value for abscissa",
                         type=float, default=-5.0)
     parser.add_argument("--x_max", help="maximum value for abscissa",
@@ -42,7 +42,7 @@ def main(argv):
     fig_filename_pattern = args.fig_filename_pattern
     data_filename = args.data_filename_pattern.format(theta, a, w, n_samples)
 
-    samples = clutterUtils.sample(a=a, w=w, n_samples=n_samples)
+    samples = clutterUtils.sample(theta=theta, a=a, w=w, n_samples=n_samples)
 
     x_dense = np.arange(x_min, x_max, x_dt)
     signal_pdf_values = scipy.stats.norm.pdf(x_dense, loc=theta, scale=1.0)
