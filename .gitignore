@@ -1,7 +1,9 @@
 *~
+*.swp
 results/*
 figures/*
 notes/*
 docs/sphinx/source/auto_examples/*
+docs/sphinx/build/*
 __pycache__
 sg_execution_times.rst
