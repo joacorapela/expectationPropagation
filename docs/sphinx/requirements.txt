@@ -1,2 +1,8 @@
 
-
+sphinx
+sphinx-gallery
+plotly
+pandas
+ipython
+numpy
+scipy
