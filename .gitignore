@@ -2,4 +2,6 @@
 results/*
 figures/*
 notes/*
+docs/sphinx/source/auto_examples/*
 __pycache__
+sg_execution_times.rst
