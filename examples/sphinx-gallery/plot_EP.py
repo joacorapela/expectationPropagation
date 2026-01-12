@@ -333,7 +333,7 @@ x_min = -10
 x_max = 10
 x_dt = 0.1
 
-x_dense = np.arange(x_min=x_min, x_max=x_max, x_dt=x_dt)
+x_dense = np.arange(x_min, x_max, x_dt)
 signal_pdf_values = norm.pdf(x_dense, loc=theta, scale=1.0)
 noise_pdf_values = norm.pdf(x_dense, loc=0, scale=np.sqrt(a))
 
