@@ -1,7 +1,7 @@
 
 
 """
-Clutter example for Expectation Propagation
+Clutter example for expectation propagation
 ===========================================
 
 The code below uses the Expectation Propagation algorithm to solve the Clutter
