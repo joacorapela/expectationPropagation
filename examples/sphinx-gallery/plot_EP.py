@@ -15,7 +15,7 @@ problem, Bishop et al., 2006, section 10.7.1
 
 import numpy as np
 from scipy.stats import multivariate_normal
-from scipy.stats import norm
+from scipy.stats import normal
 from IPython.display import display
 
 import plotly.graph_objects as go
@@ -277,7 +277,7 @@ def get_log_evidence(m, v, m_f, v_f, s_f, b):
 # ------------------
 
 def plot_pdfs(theta, m_cn, v_cn, m, v, m_fn, v_fn, samples,
-              x_min=-10.0, x_max=20.0, x_dt=0.1, title=""):
+              x_min, x_max, x_dt, title=""):
     samples = [sample[0] for sample in samples]
     x = np.arange(x_min, x_max, x_dt)
     pdf_c = norm.pdf(x=x, loc=m_cn[0], scale=np.sqrt(v_cn))
@@ -313,8 +313,8 @@ def plot_log_evidences(log_evidences):
 
 
 #%%
-# Expectation Propagation script
-# ------------------------------
+# Generate data
+# -------------
 
 theta = 3.0
 a = 10.0
@@ -324,6 +324,37 @@ N = 30
 num_iter = 10
 
 samples = sample(theta=theta, a=a, w=w, n_samples=N)
+
+#%%
+# Plot generate data
+# ------------------
+
+x_min = -10
+x_max = 10
+x_dt = 0.1
+
+x_dense = np.arange(x_min=x_min, x_max=x_max, x_dt=x_dt)
+signal_pdf_values = normal.pdf(x_dense, loc=theta, scale=1.0)
+noise_pdf_values = normal.pdf(x_dense, loc=0, scale=np.sqrt(a))
+
+fig = go.Figure()
+trace = go.Scatter(x=samples, y=np.zeros(shape=samples.shape),
+                   mode="markers", marker=dict(symbol="x", color="black"))
+fig.add_trace(trace)
+trace = go.Scatter(x=x_dense, y=signal_pdf_values, mode="lines",
+                   line=dict(color="green"))
+fig.add_trace(trace)
+trace = go.Scatter(x=x_dense, y=noise_pdf_values, mode="lines",
+                   line=dict(color="red"))
+fig.add_trace(trace)
+fig.update_xaxes(title=r"$\theta$")
+fig.update_layout(showlegend=False)
+fig
+
+#%%
+# Expectation Propagation script
+# ------------------------------
+
 samples = [np.array([sample]) for sample in samples]
 D = len(samples[0])
 m, v, m_f, v_f, s_f = init(b=b, D=D, N=N)
@@ -364,6 +395,7 @@ iter_num = 0
 s = snapshots[iter_num]
 plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"], m=s["m"], v=s["v"],
           m_fn=s["m_fn"], v_fn=s["v_fn"], samples=samples[:N],
+          x_min=x_min, x_max=x_max, x_dt=x_dt,
           title=f"Iteration {iter_num}, Factor {N-1}")
 
 #%%
@@ -374,6 +406,7 @@ iter_num = 3
 s = snapshots[iter_num]
 plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"], m=s["m"], v=s["v"],
           m_fn=s["m_fn"], v_fn=s["v_fn"], samples=samples[:N],
+          x_min=x_min, x_max=x_max, x_dt=x_dt,
           title=f"Iteration {iter_num}, Factor {N-1}")
 
 #%%
@@ -394,6 +427,7 @@ iter_num = 9
 s = snapshots[iter_num]
 plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"], m=s["m"], v=s["v"],
           m_fn=s["m_fn"], v_fn=s["v_fn"], samples=samples[:N],
+          x_min=x_min, x_max=x_max, x_dt=x_dt,
           title=f"Iteration {iter_num}, Factor {N-1}")
 
 #%%
