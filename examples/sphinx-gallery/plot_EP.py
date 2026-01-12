@@ -15,7 +15,7 @@ problem, Bishop et al., 2006, section 10.7.1
 
 import numpy as np
 from scipy.stats import multivariate_normal
-from scipy.stats import normal
+from scipy.stats import norm
 from IPython.display import display
 
 import plotly.graph_objects as go
@@ -334,8 +334,8 @@ x_max = 10
 x_dt = 0.1
 
 x_dense = np.arange(x_min=x_min, x_max=x_max, x_dt=x_dt)
-signal_pdf_values = normal.pdf(x_dense, loc=theta, scale=1.0)
-noise_pdf_values = normal.pdf(x_dense, loc=0, scale=np.sqrt(a))
+signal_pdf_values = norm.pdf(x_dense, loc=theta, scale=1.0)
+noise_pdf_values = norm.pdf(x_dense, loc=0, scale=np.sqrt(a))
 
 fig = go.Figure()
 trace = go.Scatter(x=samples, y=np.zeros(shape=samples.shape),
