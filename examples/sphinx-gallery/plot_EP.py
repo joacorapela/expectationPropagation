@@ -295,7 +295,7 @@ def plot_pdfs(theta, m_cn, v_cn, m, v, m_fn, v_fn, samples,
     fig.add_trace(trace)
     trace = go.Scatter(x=x, y=pdf_fn, mode="lines", name="factor")
     fig.add_trace(trace)
-    fig.update_xaxes(title="x")
+    fig.update_xaxes(title=r"$\theta$")
     fig.update_yaxes(title="density")
     fig.update_layout(title=title)
     return fig
