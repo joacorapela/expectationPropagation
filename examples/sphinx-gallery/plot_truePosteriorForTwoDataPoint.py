@@ -1,8 +1,8 @@
 
 
 """
-Plot true and estimated posteriors for a sample with two data points
-====================================================================
+True and estimated posteriors
+=============================
 
 The code below plots the true and estimated posteriors of a sample of two data
 points from the clutter problem.
