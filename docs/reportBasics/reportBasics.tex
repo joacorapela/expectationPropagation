@@ -1,0 +1,87 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[colorlinks]{hyperref}
+\usepackage{natbib}
+
+\title{Expectation Propagation Notes}
+\author{Joaqu\'{i}n Rapela}
+
+\begin{document}
+
+\maketitle
+
+These notes were mostly extracted from \citet{bishop06}
+
+\section*{Fundamental result}
+
+Consider the problem of minimizing $\text{KL}(p||q)$ with respect to $q(\mathbf{z})$,
+when $p(\mathbf{z})$ is a fixed distribution, and $q(\mathbf{z})$ is a member of
+the exponential family:
+
+\begin{align*}
+    q(\mathbf{z})=h(\mathbf{z})g(\eta)\exp(\eta^\intercal\mathbf{u}(\mathbf{z}))
+\end{align*}
+
+The minimizing distribution $q(\mathbf{z})$ satisfies the moment matching
+criterion:
+
+\begin{align*}
+\mathbb{E}_{q(\mathbf{z})}\left[\mathbf{u}(\mathbf{z})\right]=\mathbb{E}_{p(\mathbf{z})}\left[\mathbf{u}(\mathbf{z})\right]
+\end{align*}
+
+\section*{Summary of expectation propagation}
+
+We are given the joint probability density function between the data
+$\mathcal{D}$ and hidden variables and parameters $\theta$:
+
+\begin{align*}
+    p(\mathcal{D},\theta)=\prod_if_i(\theta)
+\end{align*}
+
+For example, if we are given $N$ independent and identically distributed data
+points $\left\{\mathbf{x}_1,\ldots,\mathbf{x}_N\right\}$, then
+$f_i(\theta)=p(\mathbf{x}_i|\theta)$, for $i\in\{1,\ldots,N\}$, and
+$f_0(\theta)$ is the prior on the hidden variables and parameters,
+$f_0(\theta)=p(\theta)$.
+
+We want to estimate 
+
+\begin{align}
+    p(\theta|\mathcal{D})=\frac{1}{p(\mathcal{D})}\prod_if_i(\theta)\quad\text{with}\quad p(\mathcal{D})=\int\prod_if_i(\theta)d\theta
+    \label{eq:truePoterior}
+\end{align}
+
+We assume that the marginalisation in Eq.~\ref{eq:truePoterior} is intractable,
+and we will approximate this true posterior with
+
+\begin{align*}
+    q(\theta)=\frac{1}{Z}\prod_i\tilde{f}_i(\theta)
+\end{align*}
+
+\noindent where $\tilde{f}_i(\theta)$ are members of the exponential family.
+
+We could find the factors $\tilde{f}_i(\theta)$ by minimizing
+
+\begin{align*}
+    \text{KL}\left(\frac{1}{p(\mathcal{D})}\prod_if_i(\theta)\middle\|\frac{1}{Z}\prod_i\tilde{f}_i(\theta)\right)
+\end{align*}
+
+However, this minimization is intractable, as we need to simultaneously fit all
+terms of the complex distribution $\frac{1}{p(\mathcal{D})}\prod_if_i(\theta)$.
+
+An alternative approach would fit separately the factors $f_i(\theta)$ and
+$\tilde{f}_i(\theta)$. But this approach could overfit some factors, by not
+taking into consideration the other factors.
+
+Expectation propagation fits the terms $f_i(\theta)$ and $\tilde{f}_i(\theta)$
+in the context of previously fitted terms. It starts by initializing all
+factors $\tilde{f}_i(\theta)$ and then cycles each factor optimizing them one
+at a time in the context of other factors.
+
+\bibliographystyle{apalike}
+\bibliography{machinelearning}
+
+\end{document}

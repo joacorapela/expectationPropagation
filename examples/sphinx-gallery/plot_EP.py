@@ -326,8 +326,8 @@ num_iter = 10
 samples = sample(theta=theta, a=a, w=w, n_samples=N)
 
 #%%
-# Plot generate data
-# ------------------
+# Plot generated data
+# -------------------
 
 x_min = -10
 x_max = 10
