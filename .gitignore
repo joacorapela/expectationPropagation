@@ -5,5 +5,9 @@ figures/*
 notes/*
 docs/sphinx/source/auto_examples/*
 docs/sphinx/build/*
+docs/reportBasics/*
+!docs/reportBasics/Makefile
+!docs/reportBasics/reportsBasics.tex
+!docs/reportBasics/reportsBasics.pdf
 __pycache__
 sg_execution_times.rst
