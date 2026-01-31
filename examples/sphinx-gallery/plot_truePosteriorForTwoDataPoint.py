@@ -183,7 +183,7 @@ def get_zeroth_moment(w, a, m_cn, v_cn, x_n):
 
 
 def get_site_strength(w, a, D, Z_n, x_n):
-    """Returns the zeroth moment :math:`\rho_n`.
+    """Returns the site strength :math:`\\rho_n`.
 
     : param m: approximate posterior q mean
     : type m: float
