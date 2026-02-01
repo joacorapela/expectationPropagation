@@ -5,6 +5,13 @@
 \usepackage{amssymb}
 \usepackage[colorlinks]{hyperref}
 \usepackage{natbib}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ Indent}%
+\algnotext{EndIndent}%
+
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \title{Expectation Propagation Notes}
 \author{Joaqu\'{i}n Rapela}
@@ -15,7 +22,8 @@
 
 These notes were mostly extracted from \citet{bishop06}
 
-\section*{Fundamental result}
+\section{Fundamental result}
+\label{sec:fundamentalResult}
 
 Consider the problem of minimizing $\text{KL}(p||q)$ with respect to $q(\mathbf{z})$,
 when $p(\mathbf{z})$ is a fixed distribution, and $q(\mathbf{z})$ is a member of
@@ -32,7 +40,7 @@ criterion:
 \mathbb{E}_{q(\mathbf{z})}\left[\mathbf{u}(\mathbf{z})\right]=\mathbb{E}_{p(\mathbf{z})}\left[\mathbf{u}(\mathbf{z})\right]
 \end{align*}
 
-\section*{Summary of expectation propagation}
+\section{Summary of expectation propagation}
 
 We are given the joint probability density function between the data
 $\mathcal{D}$ and hidden variables and parameters $\theta$:
@@ -54,7 +62,7 @@ We want to estimate
     \label{eq:truePoterior}
 \end{align}
 
-We assume that the marginalisation in Eq.~\ref{eq:truePoterior} is intractable,
+We assume that the marginalization in Eq.~\ref{eq:truePoterior} is intractable,
 and we will approximate this true posterior with
 
 \begin{align*}
@@ -76,10 +84,92 @@ An alternative approach would fit separately the factors $f_i(\theta)$ and
 $\tilde{f}_i(\theta)$. But this approach could overfit some factors, by not
 taking into consideration the other factors.
 
-Expectation propagation fits the terms $f_i(\theta)$ and $\tilde{f}_i(\theta)$
-in the context of previously fitted terms. It starts by initializing all
-factors $\tilde{f}_i(\theta)$ and then cycles each factor optimizing them one
-at a time in the context of other factors.
+Expectation propagation fits the term $\tilde{f}_i(\theta)$ to the term
+$f_i(\theta)$ in the context of previously fitted terms. It starts by
+initializing all factors $\tilde{f}_i(\theta)$ and then cycles each factor
+optimizing them one at a time in the context of other factors. Suppose it wants
+to optimize the factor $\tilde{f}_j(\theta)$. It starts by removing this factor
+from the product, giving the unnormalized distribution $q^{\backslash
+j}(\theta)=\prod_{i\neq j}\tilde{f}_i(\theta)$, and then estimates
+
+\begin{align*}
+    \tilde{f}_j^\text{new}(\theta)=\argmin_{\tilde{f}_j(\theta)}\left\{\text{KL}\left(\frac{1}{Z_j}f_j(\theta)\prod_{i\neq j}\tilde{f}_i(\theta)\middle\|\frac{1}{Z}\tilde{f}_j(\theta)\prod_{i\neq j}\tilde{f}_i(\theta)\right)\right\}
+\end{align*}
+
+It does this estimation in two steps. First, it estimates $q^\text{new}(\theta)$
+as
+
+\begin{align*}
+    q^\text{new}(\theta)=\argmin_{q(\theta)}\left\{\text{KL}\left(\frac{1}{Z_j}f_j(\theta)\prod_{i\neq
+    j}\tilde{f}_i(\theta)\middle\|q(\theta)\right)\right\}
+\end{align*}
+
+\noindent and second it estimates
+$\tilde{f}_j^\text{new}(\theta)=K\frac{q^\text{new}(\theta)}{q^{\backslash
+j}(\theta)}$.
+%
+Because $q(\theta)$ is from the exponential family, from
+Section~\ref{sec:fundamentalResult}, the mean parameters $\mu$ of
+$q^\text{new}(\theta)$ are
+$\mu=E_{q(\theta)}[u(\theta)]=E_{\frac{1}{Z_j}f_j(\theta)q^{\backslash
+j}(\theta)}[u(\theta)]$. This is called moment matching. Thus,
+$q^\text{new}(\theta)$ is obtained by taking
+$E_{\frac{1}{Z_j}f_j(\theta)q^{\backslash j}(\theta)}[u(\theta)]$ as mean
+parameters. Expectation propagation assumes that the last expectation is
+tractable.
+%
+For example, if $q(\theta)$ is a Normal distribution, then its mean and
+covariance are the mean and covariance of
+$\frac{1}{Z_j}f_j(\theta)q^{\backslash j}(\theta)$.
+
+From the expression of $\tilde{f}_j^\text{new}(\theta)$ in the proceeding
+paragraph we get $K=\int \tilde{f}_j^\text{new}(\theta)q^{\backslash
+j}(\theta)d\theta$. Thus, $K$ can be approximated by zeroth-order moment
+matching; i.e., $K=\int \tilde{f}_j^\text{new}(\theta)q^{\backslash
+j}(\theta)d\theta\simeq \int f_j(\theta)q^{\backslash j}(\theta)d\theta$.
+
+\section{Pseudo code and Python implementation}
+
+Pseudo code for the expectation propagation algorithm is provided in Algorithm~\ref{algorithm:ep}, and Python code implementing this algorithm can be found \href{https://github.com/joacorapela/expectationPropagation}{here}.
+
+\begin{algorithm}
+\caption{Expectation propagation}
+\begin{algorithmic}
+\State We are given a joint distribution over observed data $\mathcal{D}$ and latent variables $\theta$ in the form of a product of factors
+\[
+p(\mathcal{D}, \theta) = \prod_i f_i(\theta)
+\]
+\State and we wish to approximate the posterior distribution $p(\theta | \mathcal{D})$ by a distribution $q(\theta)$ in the exponential family. We also wish to approximate the model evidence $p(\mathcal{D})$.
+
+\State 1. Initialize all of the approximating factors $\tilde{f}_i(\theta)$.
+\State 2. Initialize the posterior approximation $q(\theta) \propto \prod_i \tilde{f}_i(\theta)$.
+\State 3. Repeat until convergence:
+\Indent
+    \State (a) Choose a factor $f_i(\theta)$ to be refined.
+    \State (b) Remove the current approximating factor $\tilde{f}_i(\theta)$ from the posterior by division:
+    \[
+    q_{\setminus i}(\theta) = \frac{q(\theta)}{\tilde{f}_i(\theta)}
+    \]
+    \State (c) Evaluate the new posterior $q^{\text{new}}(\theta)$ by matching the moments of 
+    \[
+    \frac{1}{Z_i} f_i(\theta) q_{\setminus i}(\theta)
+    \]
+    \State including evaluation of the normalization constant
+    \[
+    Z_i = \int f_i(\theta) q_{\setminus i}(\theta) d\theta
+    \]
+    \State (d) Compute the revised factor
+    \[
+    \tilde{f}_i(\theta) = Z_i \frac{q^{\text{new}}(\theta)}{q_{\setminus i}(\theta)}
+    \]
+\EndIndent
+\State 4. The resulting approximation to the evidence is given by
+\[
+p(\mathcal{D}) \simeq \int \prod_i \tilde{f}_i(\theta) d\theta
+\]
+\end{algorithmic}
+\label{algorithm:ep}
+\end{algorithm}
 
 \bibliographystyle{apalike}
 \bibliography{machinelearning}
