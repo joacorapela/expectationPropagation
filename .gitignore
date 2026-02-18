@@ -3,6 +3,7 @@
 results/*
 figures/*
 notes/*
+src/expectation_propagation.egg-info/*
 docs/sphinx/source/auto_examples/*
 docs/sphinx/build/*
 docs/reportBasics/*
