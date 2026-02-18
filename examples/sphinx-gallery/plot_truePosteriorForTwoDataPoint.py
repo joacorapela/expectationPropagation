@@ -99,10 +99,6 @@ def two_points_true_posterior(theta):
     return answer
 
 
-x_dense = np.arange(x_min, x_max, x_dt)
-true_posterior_values = true_posterior(theta=x_dense)
-
-
 #%%
 # Expectation Propagation script
 # ------------------------------
@@ -155,7 +151,7 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    v_fn=s["v_fn"], samples=samples[:N],
                                    x_min=x_min, x_max=x_max, x_dt=x_dt,
                                    title=f"Iteration {iter_num}, Factor {N-1}",
-                                   plot_true_posterior_fn=two_points_true_posterior)
+                                   true_posterior_func=two_points_true_posterior)
 
 #%%
 # Plot EP probability density functions after iteration 3
@@ -168,7 +164,7 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    v_fn=s["v_fn"], samples=samples[:N],
                                    x_min=x_min, x_max=x_max, x_dt=x_dt,
                                    title=f"Iteration {iter_num}, Factor {N-1}",
-                                   plot_true_posterior_fn=two_points_true_posterior)
+                                   true_posterior_func=two_points_true_posterior)
 
 #%%
 # Plot EP probability density functions after iteration 6
@@ -181,7 +177,7 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    v_fn=s["v_fn"], samples=samples[:N],
                                    x_min=x_min, x_max=x_max, x_dt=x_dt,
                                    title=f"Iteration {iter_num}, Factor {N-1}",
-                                   plot_true_posterior_fn=two_points_true_posterior)
+                                   true_posterior_func=two_points_true_posterior)
 
 #%%
 # Plot EP probability density functions after iteration 9
@@ -194,7 +190,7 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    v_fn=s["v_fn"], samples=samples[:N],
                                    x_min=x_min, x_max=x_max, x_dt=x_dt,
                                    title=f"Iteration {iter_num}, Factor {N-1}",
-                                   plot_true_posterior_fn=two_points_true_posterior)
+                                   true_posterior_func=two_points_true_posterior)
 
 
 #%%
