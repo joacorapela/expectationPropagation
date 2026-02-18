@@ -23,6 +23,10 @@ import ep.examples.clutter.core
 import ep.examples.clutter.plot
 
 
+#%%
+# Sample from the clutter model
+# -----------------------------
+
 theta = 3.0
 a = 10.0
 b = 100.0
@@ -33,8 +37,8 @@ num_iter = 10
 samples = ep.examples.clutter.utils.sample(theta=theta, a=a, w=w, n_samples=N)
 
 #%%
-# Plot generated data
-# -------------------
+# Plot sampled data
+# -----------------
 
 x_min = -10
 x_max = 10
