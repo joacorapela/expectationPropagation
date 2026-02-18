@@ -9,6 +9,14 @@ points from the clutter problem.
 
 """
 
+# %%
+# Implementation Details
+# ----------------------
+# Below is the code for the EP functions used in this example:
+#
+# .. literalinclude:: /../../../src/ep/examples/clutter/core.py
+#    :language: python
+
 #%%
 # Import requirments
 # ------------------
@@ -114,8 +122,7 @@ for iter_num in range(num_iter):
     for n in range(N):
         v_cn = ep.examples.clutter.core.get_cavity_var(v=v, v_fn=v_f[n])
         m_cn = ep.examples.clutter.core.get_cavity_mean(m=m, m_fn=m_f[n], v_fn=v_f[n], v_cn=v_cn)
-        Z_n = ep.examples.clutter.core.get_zeroth_moment(w=w, a=a, m_cn=m_cn, v_cn=v_cn,
-                                x_n=samples[n])
+        Z_n = ep.examples.clutter.core.get_zeroth_moment(w=w, a=a, m_cn=m_cn, v_cn=v_cn, x_n=samples[n])
         rho_n = ep.examples.clutter.core.get_site_strength(w=w, a=a, D=D, Z_n=Z_n, x_n=samples[n])
         m = ep.examples.clutter.core.get_q_mean(m_cn=m_cn, v_cn=v_cn, rho_n=rho_n, x_n=samples[n])
         v = ep.examples.clutter.core.get_q_var(m_cn=m_cn, v_cn=v_cn, rho_n=rho_n, x_n=samples[n])

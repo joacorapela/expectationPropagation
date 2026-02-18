@@ -9,6 +9,14 @@ problem, Bishop et al., 2006, section 10.7.1
 
 """
 
+# %%
+# Implementation Details
+# ----------------------
+# Below is the code for the EP functions used in this example:
+#
+# .. literalinclude:: /../../../src/ep/examples/clutter/core.py
+#    :language: python
+
 #%%
 # Import requirments
 # ------------------
@@ -21,7 +29,6 @@ import plotly.graph_objects as go
 import ep.examples.clutter.utils
 import ep.examples.clutter.core
 import ep.examples.clutter.plot
-
 
 #%%
 # Sample from the clutter model
@@ -76,7 +83,7 @@ for iter_num in range(num_iter):
     for n in range(N):
         v_cn = ep.examples.clutter.core.get_cavity_var(v=v, v_fn=v_f[n])
         m_cn = ep.examples.clutter.core.get_cavity_mean(m=m, m_fn=m_f[n], v_fn=v_f[n],
-                                                v_cn=v_cn)
+                                                        v_cn=v_cn)
         Z_n = ep.examples.clutter.core.get_zeroth_moment(w=w, a=a, m_cn=m_cn,
                                                          v_cn=v_cn,
                                                          x_n=samples[n])
@@ -156,7 +163,7 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
 
 #%%
 # Plot EP probability density functions after iteration 19
-# -------------------------------------------------------
+# --------------------------------------------------------
 
 iter_num = 19
 s = snapshots[iter_num]
