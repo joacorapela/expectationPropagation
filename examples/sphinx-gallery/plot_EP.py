@@ -32,7 +32,7 @@ a = 10.0
 b = 100.0
 w = 0.5
 N = 30
-num_iter = 10
+num_iter = 20
 
 samples = ep.examples.clutter.utils.sample(theta=theta, a=a, w=w, n_samples=N)
 
@@ -78,19 +78,21 @@ for iter_num in range(num_iter):
         m_cn = ep.examples.clutter.core.get_cavity_mean(m=m, m_fn=m_f[n], v_fn=v_f[n],
                                                 v_cn=v_cn)
         Z_n = ep.examples.clutter.core.get_zeroth_moment(w=w, a=a, m_cn=m_cn,
-                                                 v_cn=v_cn, x_n=samples[n])
-        rho_n = ep.examples.clutter.core.get_site_strength(w=w, a=a, D=D, Z_n=Z_n,
-                                                   x_n=samples[n])
-        m = ep.examples.clutter.core.get_q_mean(m_cn=m_cn, v_cn=v_cn, rho_n=rho_n,
-                                        x_n=samples[n])
-        v = ep.examples.clutter.core.get_q_var(m_cn=m_cn, v_cn=v_cn, rho_n=rho_n,
-                                       x_n=samples[n])
+                                                         v_cn=v_cn,
+                                                         x_n=samples[n])
+        rho_n = ep.examples.clutter.core.get_site_strength(w=w, a=a, D=D,
+                                                           Z_n=Z_n,
+                                                           x_n=samples[n])
+        m = ep.examples.clutter.core.get_q_mean(m_cn=m_cn, v_cn=v_cn,
+                                                rho_n=rho_n, x_n=samples[n])
+        v = ep.examples.clutter.core.get_q_var(m_cn=m_cn, v_cn=v_cn,
+                                               rho_n=rho_n, x_n=samples[n])
         v_f[n] = ep.examples.clutter.core.get_factor_var(v_cn=v_cn, v=v)
         m_f[n] = ep.examples.clutter.core.get_factor_mean(m_cn=m_cn, v_cn=v_cn,
-                                                  v_fn=v_f[n], m=m)
+                                                          v_fn=v_f[n], m=m)
         s_f[n] = ep.examples.clutter.core.get_factor_scale(Z_n=Z_n, m_fn=m_f[n],
-                                                   v_fn=v_f[n], m_cn=m_cn,
-                                                   v_cn=v_cn)
+                                                           v_fn=v_f[n],
+                                                           m_cn=m_cn, v_cn=v_cn)
     snapshots.append({
         "iter": iter_num,
         "v_cn": v_cn,

@@ -103,7 +103,7 @@ def two_points_true_posterior(theta):
 # Expectation Propagation script
 # ------------------------------
 
-num_iter = 10
+num_iter = 20
 
 D = len(samples[0])
 m, v, m_f, v_f, s_f = ep.examples.clutter.core.init(b=b, D=D, N=N)
@@ -192,6 +192,19 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    title=f"Iteration {iter_num}, Factor {N-1}",
                                    true_posterior_func=two_points_true_posterior)
 
+
+#%%
+# Plot EP probability density functions after iteration 19
+# -------------------------------------------------------
+
+iter_num = 19
+s = snapshots[iter_num]
+ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
+                                   m=s["m"], v=s["v"], m_fn=s["m_fn"],
+                                   v_fn=s["v_fn"], samples=samples[:N],
+                                   x_min=x_min, x_max=x_max, x_dt=x_dt,
+                                   title=f"Iteration {iter_num}, Factor {N-1}",
+                                   true_posterior_func=two_points_true_posterior)
 
 #%%
 # Plot log evidences
