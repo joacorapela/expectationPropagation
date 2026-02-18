@@ -5,7 +5,8 @@ import plotly.graph_objects as go
 
 
 def plot_pdfs(theta, m_cn, v_cn, m, v, m_fn, v_fn, samples,
-              x_min, x_max, x_dt, title=""):
+              x_min, x_max, x_dt, title="",
+              true_posterior_func=None):
     samples = [sample[0] for sample in samples]
     x = np.arange(x_min, x_max, x_dt)
     pdf_c = norm.pdf(x=x, loc=m_cn[0], scale=np.sqrt(v_cn))
@@ -23,6 +24,11 @@ def plot_pdfs(theta, m_cn, v_cn, m, v, m_fn, v_fn, samples,
     fig.add_trace(trace)
     trace = go.Scatter(x=x, y=pdf_fn, mode="lines", name="factor")
     fig.add_trace(trace)
+    if true_posterior_func is not None:
+        true_posterior_samples = true_posterior_func(theta=x)
+        trace = go.Scatter(x=x, y=true_posterior_samples, mode="lines",
+                           name="true posterior")
+        fig.add_trace(trace)
     fig.update_xaxes(title=r"$\theta$")
     fig.update_yaxes(title="density")
     fig.update_layout(title=title)

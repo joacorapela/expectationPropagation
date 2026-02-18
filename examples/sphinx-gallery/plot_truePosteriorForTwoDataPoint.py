@@ -87,7 +87,7 @@ pi_CC = (w**2 *
 K = 1.0 / (pi_SS + pi_SC + pi_CS + pi_CC)
 
 
-def true_posterior(theta):
+def two_points_true_posterior(theta):
     answer = K * (pi_SS * multivariate_normal(mu_SS, sigma2_SS *
                                               np.eye(D)).pdf(theta) +
                   pi_SC * multivariate_normal(mu_SC, sigma2_SC *
@@ -154,7 +154,8 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    m=s["m"], v=s["v"], m_fn=s["m_fn"],
                                    v_fn=s["v_fn"], samples=samples[:N],
                                    x_min=x_min, x_max=x_max, x_dt=x_dt,
-                                   title=f"Iteration {iter_num}, Factor {N-1}")
+                                   title=f"Iteration {iter_num}, Factor {N-1}",
+                                   plot_true_posterior_fn=two_points_true_posterior)
 
 #%%
 # Plot EP probability density functions after iteration 3
@@ -166,7 +167,8 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    m=s["m"], v=s["v"], m_fn=s["m_fn"],
                                    v_fn=s["v_fn"], samples=samples[:N],
                                    x_min=x_min, x_max=x_max, x_dt=x_dt,
-                                   title=f"Iteration {iter_num}, Factor {N-1}")
+                                   title=f"Iteration {iter_num}, Factor {N-1}",
+                                   plot_true_posterior_fn=two_points_true_posterior)
 
 #%%
 # Plot EP probability density functions after iteration 6
@@ -178,7 +180,8 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    m=s["m"], v=s["v"], m_fn=s["m_fn"],
                                    v_fn=s["v_fn"], samples=samples[:N],
                                    x_min=x_min, x_max=x_max, x_dt=x_dt,
-                                   title=f"Iteration {iter_num}, Factor {N-1}")
+                                   title=f"Iteration {iter_num}, Factor {N-1}",
+                                   plot_true_posterior_fn=two_points_true_posterior)
 
 #%%
 # Plot EP probability density functions after iteration 9
@@ -190,7 +193,8 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    m=s["m"], v=s["v"], m_fn=s["m_fn"],
                                    v_fn=s["v_fn"], samples=samples[:N],
                                    x_min=x_min, x_max=x_max, x_dt=x_dt,
-                                   title=f"Iteration {iter_num}, Factor {N-1}")
+                                   title=f"Iteration {iter_num}, Factor {N-1}",
+                                   plot_true_posterior_fn=two_points_true_posterior)
 
 
 #%%
