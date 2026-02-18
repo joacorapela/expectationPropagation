@@ -155,6 +155,18 @@ ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
                                    title=f"Iteration {iter_num}, Factor {N-1}")
 
 #%%
+# Plot EP probability density functions after iteration 19
+# -------------------------------------------------------
+
+iter_num = 19
+s = snapshots[iter_num]
+ep.examples.clutter.plot.plot_pdfs(theta=theta, m_cn=s["m_cn"], v_cn=s["v_cn"],
+                                   m=s["m"], v=s["v"], m_fn=s["m_fn"],
+                                   v_fn=s["v_fn"], samples=samples[:N],
+                                   x_min=x_min, x_max=x_max, x_dt=x_dt,
+                                   title=f"Iteration {iter_num}, Factor {N-1}")
+
+#%%
 # Plot log evidences
 # ------------------
 
